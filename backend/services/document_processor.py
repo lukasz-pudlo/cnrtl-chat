@@ -13,7 +13,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def process_document(file_path: str, content: str, project_type: str) -> List[Dict[str, Any]]:
+def process_entry(file_path: str, content: str, project_type: str) -> List[Dict[str, Any]]:
     """
     Process a document into chunks with appropriate JSONB metadata
 
