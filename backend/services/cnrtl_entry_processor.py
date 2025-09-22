@@ -17,16 +17,30 @@ with open(filepath, 'r') as csvfile:
 
     print(f"Total number of rows in {filepath}: {csvreader.line_num}")
 
-for row in rows[:5]:
+for row in rows[1010:1011]:
     query = row[1]
 
     page = requests.get(f"{CNRTL_URL}/definition/{query}")
     if page.status_code == 200:
+        # Get content of the CNRTL entry and find title
         soup = BeautifulSoup(page.content, "html.parser")
-        word = soup.find(id="vtoolbar")
-        print(word)
+        title = soup.find("title").get_text().split()[-1].lower()
+        # content_raw_text = soup.get_text().strip()
+        lexicontent = soup.find(id="lexicontent")
+        definitions = soup.find_all("span", class_="tlf_cdefinition")
+
+        definition_list = [definition.get_text() for definition in definitions]
+
+        # Save the entry as a text file
+        definition_text = "\n".join(definition_list)
+        txt_file_name = f"{title}.txt"
+        txt_file_path = f"../data/cnrtl_entries/{txt_file_name}"
+        with open(txt_file_path, 'w') as f:
+            f.write(definition_text)
+
+        # word = soup.find(id="vtoolbar")
+        # print(word)
         # print(soup)
-        cnrtl_entry_text = soup.get_text()
 
         # with open('../data/{}')
 
